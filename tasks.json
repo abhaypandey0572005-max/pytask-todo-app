@@ -1,0 +1,26 @@
+[
+    {
+        "task": "learn stitch",
+        "completed": false
+    },
+    {
+        "task": "complete 10k steps",
+        "completed": false
+    },
+    {
+        "task": "Learn UI designing",
+        "completed": false
+    },
+    {
+        "task": "Learn python",
+        "completed": false
+    },
+    {
+        "task": "Learning antigravity",
+        "description": "Antigravity provides me a better coding that's why i am learning it",
+        "due_date": "2026-08-24",
+        "category": "Project",
+        "priority": "Medium",
+        "completed": false
+    }
+]

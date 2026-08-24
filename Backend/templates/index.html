@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python To-Do List</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background: #222;
+            color: white;
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: #f7f7f7;
+            border-radius: 6px;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .complete-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #e53935;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📝 Python To-Do List</h1>
+
+    <div class="input-box">
+        <input type="text" id="taskInput" placeholder="Enter a new task...">
+        <button class="add-btn" onclick="addTask()">Add Task</button>
+    </div>
+
+    <div id="taskList"></div>
+
+</div>
+
+<script>
+
+const API_URL = "http://127.0.0.1:5000";
+
+async function loadTasks() {
+
+    const response = await fetch(`${API_URL}/tasks`);
+    const tasks = await response.json();
+
+    const taskList = document.getElementById("taskList");
+
+    taskList.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+
+        const taskDiv = document.createElement("div");
+
+        taskDiv.className = "task";
+
+        taskDiv.innerHTML = `
+            <span class="${task.completed ? 'completed' : ''}">
+                ${task.task}
+            </span>
+
+            <div class="actions">
+
+                ${
+                    !task.completed
+                    ? `<button class="complete-btn"
+                        onclick="completeTask(${index})">
+                        Complete
+                      </button>`
+                    : ""
+                }
+
+                <button class="delete-btn"
+                    onclick="deleteTask(${index})">
+                    Delete
+                </button>
+
+            </div>
+        `;
+
+        taskList.appendChild(taskDiv);
+    });
+}
+
+
+async function addTask() {
+
+    const input = document.getElementById("taskInput");
+
+    const task = input.value.trim();
+
+    if (!task) {
+        alert("Please enter a task!");
+        return;
+    }
+
+    await fetch(`${API_URL}/tasks`, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            task: task
+        })
+    });
+
+    input.value = "";
+
+    loadTasks();
+}
+
+
+async function completeTask(index) {
+
+    await fetch(`${API_URL}/tasks/${index}/complete`, {
+        method: "PUT"
+    });
+
+    loadTasks();
+}
+
+
+async function deleteTask(index) {
+
+    await fetch(`${API_URL}/tasks/${index}`, {
+        method: "DELETE"
+    });
+
+    loadTasks();
+}
+
+
+loadTasks();
+
+</script>
+
+</body>
+</html>
