@@ -39,19 +39,18 @@ export default function TaskItem({
   const dueDate = task.due_date;
   const description = task.description;
 
-  // Dynamic priority styles for both light & dark mode
   const priorityConfig = {
     Low: {
       badge: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30',
-      dot: 'bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.5)]',
+      dot: 'bg-emerald-500 dark:bg-emerald-400',
     },
     Medium: {
       badge: 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30',
-      dot: 'bg-amber-500 dark:bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)]',
+      dot: 'bg-amber-500 dark:bg-amber-400',
     },
     High: {
       badge: 'bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/35',
-      dot: 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.7)] animate-pulse',
+      dot: 'bg-rose-500 animate-pulse',
     },
   }[priority] || {
     badge: 'bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20',
@@ -61,94 +60,85 @@ export default function TaskItem({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 15, scale: 0.97 }}
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-      whileHover={{ y: -2 }}
-      transition={{ duration: 0.25 }}
-      className={`group relative overflow-hidden rounded-3xl border transition-all duration-300 p-4 sm:p-5 ${
+      exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.15 } }}
+      className={`group relative overflow-hidden rounded-2xl border transition-all duration-200 p-3.5 sm:p-4 ${
         task.completed
           ? 'bg-slate-50/60 dark:bg-slate-900/30 border-slate-200/60 dark:border-slate-800/60 opacity-70'
-          : 'bg-white/95 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900/90 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 shadow-md hover:shadow-xl shadow-slate-200/40 dark:shadow-black/30'
+          : 'bg-white dark:bg-slate-900/70 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 shadow-sm sm:shadow-md'
       }`}
     >
-      {/* Top card highlight */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300/40 dark:via-slate-700/30 to-transparent" />
-
-      <div className="flex items-start justify-between gap-3.5">
-        {/* Checkbox button with bouncy animation */}
-        <motion.button
+      <div className="flex items-start justify-between gap-3">
+        {/* Checkbox button */}
+        <button
           type="button"
           onClick={handleToggle}
           disabled={task.completed || isCompleting}
-          whileHover={{ scale: 1.15 }}
-          whileTap={{ scale: 0.85 }}
           title={task.completed ? 'Task completed' : 'Mark as complete'}
-          className={`w-6 h-6 rounded-xl shrink-0 mt-0.5 flex items-center justify-center transition-all cursor-pointer ${
+          className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg shrink-0 mt-0.5 flex items-center justify-center transition-all cursor-pointer ${
             task.completed
-              ? 'bg-gradient-to-tr from-emerald-600 to-teal-500 text-white cursor-default shadow-md shadow-emerald-500/20'
-              : 'border-2 border-slate-300 dark:border-slate-600 hover:border-indigo-500 dark:hover:border-cyan-400 hover:bg-indigo-50 dark:hover:bg-cyan-500/10 text-transparent hover:text-indigo-600 dark:hover:text-cyan-400'
+              ? 'bg-emerald-600 text-white cursor-default shadow-sm'
+              : 'border-2 border-slate-300 dark:border-slate-600 hover:border-indigo-500 text-transparent hover:text-indigo-600'
           }`}
         >
           {isCompleting ? (
-            <Loader2 className="w-3.5 h-3.5 text-indigo-600 dark:text-cyan-400 animate-spin" />
+            <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-indigo-600 animate-spin" />
           ) : (
-            <Check className={`w-3.5 h-3.5 ${task.completed ? 'opacity-100 stroke-[3]' : 'opacity-0 group-hover:opacity-100'}`} />
+            <Check className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${task.completed ? 'opacity-100 stroke-[3]' : 'opacity-0'}`} />
           )}
-        </motion.button>
+        </button>
 
-        {/* Content */}
+        {/* Task Content */}
         <div className="flex-1 min-w-0">
-          {/* Task Headline */}
-          <div className="flex items-center gap-2 flex-wrap mb-2">
-            <h4
-              className={`text-sm sm:text-base font-semibold leading-snug transition-all ${
-                task.completed
-                  ? 'line-through text-slate-400 dark:text-slate-500'
-                  : 'text-slate-800 dark:text-slate-100 group-hover:text-slate-950 dark:group-hover:text-white'
-              }`}
-            >
-              {task.task}
-            </h4>
-          </div>
+          {/* Headline */}
+          <h4
+            className={`text-xs sm:text-sm font-semibold leading-snug break-words mb-1.5 ${
+              task.completed
+                ? 'line-through text-slate-400 dark:text-slate-500'
+                : 'text-slate-900 dark:text-slate-100'
+            }`}
+          >
+            {task.task}
+          </h4>
 
-          {/* Metadata Badges */}
-          <div className="flex items-center gap-2 flex-wrap text-xs text-slate-500 dark:text-slate-400">
-            {/* Priority with Glow */}
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[11px] font-bold ${priorityConfig.badge}`}>
+          {/* Badges Row */}
+          <div className="flex items-center gap-1.5 flex-wrap text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400">
+            {/* Priority */}
+            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border font-bold ${priorityConfig.badge}`}>
               <span className={`w-1.5 h-1.5 rounded-full ${priorityConfig.dot}`} />
               {priority}
             </span>
 
             {/* Category */}
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 text-[11px] font-medium shadow-sm">
-              <Folder className="w-3 h-3 text-indigo-500 dark:text-indigo-400" />
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium">
+              <Folder className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-indigo-500 dark:text-indigo-400" />
               {category}
             </span>
 
             {/* Due Date */}
             {dueDate && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 text-[11px] font-medium shadow-sm">
-                <Calendar className="w-3 h-3 text-cyan-600 dark:text-cyan-400" />
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium">
+                <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-600 dark:text-cyan-400" />
                 {dueDate}
               </span>
             )}
 
-            {/* Notes Toggle Button */}
+            {/* Notes Toggle */}
             {description && (
               <button
                 type="button"
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium text-[11px] ml-1 cursor-pointer transition-colors"
+                className="inline-flex items-center gap-0.5 text-indigo-600 dark:text-indigo-400 font-medium ml-0.5 cursor-pointer"
               >
                 {isExpanded ? (
                   <>
-                    <span>Hide Notes</span>
+                    <span>Hide</span>
                     <ChevronUp className="w-3 h-3" />
                   </>
                 ) : (
                   <>
-                    <span>View Notes</span>
+                    <span>Notes</span>
                     <ChevronDown className="w-3 h-3" />
                   </>
                 )}
@@ -156,7 +146,7 @@ export default function TaskItem({
             )}
           </div>
 
-          {/* Expandable Notes Drawer with Framer Motion */}
+          {/* Expanded Notes */}
           <AnimatePresence>
             {isExpanded && description && (
               <motion.div
@@ -166,7 +156,7 @@ export default function TaskItem({
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="mt-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800/90 text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap shadow-inner">
+                <div className="mt-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
                   {description}
                 </div>
               </motion.div>
@@ -174,34 +164,30 @@ export default function TaskItem({
           </AnimatePresence>
         </div>
 
-        {/* Actions (Edit & Delete) */}
-        <div className="flex items-center gap-1 shrink-0">
-          <motion.button
+        {/* Action Buttons */}
+        <div className="flex items-center gap-0.5 shrink-0">
+          <button
             type="button"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
             onClick={() => onOpenEdit(originalIndex, task)}
             title="Edit task"
-            className="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/15 transition-all cursor-pointer"
+            className="p-1.5 sm:p-2 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
           >
-            <Edit2 className="w-4 h-4" />
-          </motion.button>
+            <Edit2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          </button>
 
-          <motion.button
+          <button
             type="button"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
             onClick={handleDelete}
             disabled={isDeleting}
             title="Delete task"
-            className="p-2 rounded-xl text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/15 transition-all cursor-pointer disabled:opacity-50"
+            className="p-1.5 sm:p-2 rounded-lg text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all cursor-pointer disabled:opacity-50"
           >
             {isDeleting ? (
-              <Loader2 className="w-4 h-4 text-rose-500 animate-spin" />
+              <Loader2 className="w-3.5 h-3.5 text-rose-500 animate-spin" />
             ) : (
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             )}
-          </motion.button>
+          </button>
         </div>
       </div>
     </motion.div>

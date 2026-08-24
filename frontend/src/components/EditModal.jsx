@@ -51,50 +51,48 @@ export default function EditModal({ isOpen, taskData, onSave, onClose }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
           />
 
           {/* Modal Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            initial={{ opacity: 0, scale: 0.94, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
+            exit={{ opacity: 0, scale: 0.94, y: 15 }}
             transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-            className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl z-10 overflow-hidden"
+            className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
           >
             {/* Top Header */}
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-                  <Edit3 className="w-4 h-4" />
+                <div className="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                  <Edit3 className="w-3.5 h-3.5" />
                 </div>
-                <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
+                <h3 className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100">
                   Edit Task
                 </h3>
               </div>
-              <motion.button
+              <button
                 type="button"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
                 onClick={onClose}
-                className="p-1.5 rounded-xl text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
+                className="p-1 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
               >
                 <X className="w-5 h-5" />
-              </motion.button>
+              </button>
             </div>
 
             {/* Edit Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               {/* TASK_TITLE */}
               <div>
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
                   TASK_TITLE
                 </label>
                 <input
@@ -105,125 +103,114 @@ export default function EditModal({ isOpen, taskData, onSave, onClose }) {
                     if (error) setError('');
                   }}
                   placeholder="e.g., Optimize database queries"
-                  className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 rounded-xl px-4 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none transition-all"
+                  className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none transition-all"
                   autoFocus
                 />
               </div>
 
               {/* DESCRIPTION */}
               <div>
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
                   DESCRIPTION
                 </label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Add detailed notes or requirements..."
-                  className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 rounded-xl px-4 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none resize-none transition-all"
+                  className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none resize-none transition-all"
                 />
               </div>
 
-              {/* DUE_DATE */}
-              <div>
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                  DUE_DATE
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Calendar className="w-4 h-4" />
-                  </div>
+              {/* DUE_DATE & CATEGORY */}
+              <div className="grid grid-cols-2 gap-2.5">
+                {/* DUE_DATE */}
+                <div>
+                  <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                    DUE_DATE
+                  </label>
                   <input
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-800 dark:text-slate-100 focus:outline-none transition-all"
+                    className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 rounded-xl px-2.5 py-2 text-xs sm:text-sm text-slate-800 dark:text-slate-100 focus:outline-none transition-all"
                   />
                 </div>
-              </div>
 
-              {/* CATEGORY */}
-              <div>
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                  CATEGORY
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Folder className="w-4 h-4" />
-                  </div>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 rounded-xl pl-10 pr-9 py-2.5 text-sm text-slate-800 dark:text-slate-100 focus:outline-none transition-all appearance-none cursor-pointer"
-                  >
-                    <option value="Work">Work</option>
-                    <option value="Personal">Personal</option>
-                    <option value="Study">Study</option>
-                    <option value="Project">Project</option>
-                    <option value="Health">Health</option>
-                    <option value="Finance">Finance</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
+                {/* CATEGORY */}
+                <div>
+                  <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                    CATEGORY
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-700/80 focus:border-indigo-500 rounded-xl pl-3 pr-6 py-2 text-xs sm:text-sm text-slate-800 dark:text-slate-100 focus:outline-none appearance-none cursor-pointer"
+                    >
+                      <option value="Work">Work</option>
+                      <option value="Personal">Personal</option>
+                      <option value="Study">Study</option>
+                      <option value="Project">Project</option>
+                      <option value="Health">Health</option>
+                      <option value="Finance">Finance</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none text-slate-400">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* PRIORITY_LEVEL */}
               <div>
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+                <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                   PRIORITY_LEVEL
                 </label>
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-3 gap-2">
                   {/* Low */}
-                  <motion.button
+                  <button
                     type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
                     onClick={() => setPriority('Low')}
-                    className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                       priority === 'Low'
-                        ? 'border-indigo-600 dark:border-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/50 text-slate-900 dark:text-white shadow-md ring-1 ring-indigo-500/40'
-                        : 'border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+                        ? 'border-indigo-600 dark:border-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 text-slate-900 dark:text-white shadow-sm'
+                        : 'border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400'
                     }`}
                   >
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
                     <span>Low</span>
-                  </motion.button>
+                  </button>
 
                   {/* Medium */}
-                  <motion.button
+                  <button
                     type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
                     onClick={() => setPriority('Medium')}
-                    className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                       priority === 'Medium'
-                        ? 'border-amber-500 dark:border-amber-400 bg-amber-50/50 dark:bg-amber-950/50 text-slate-900 dark:text-white shadow-md ring-1 ring-amber-500/40'
-                        : 'border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+                        ? 'border-amber-500 dark:border-amber-400 bg-amber-50 dark:bg-amber-950/50 text-slate-900 dark:text-white shadow-sm'
+                        : 'border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400'
                     }`}
                   >
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                    <span className="w-2 h-2 rounded-full bg-amber-400" />
                     <span>Medium</span>
-                  </motion.button>
+                  </button>
 
                   {/* High */}
-                  <motion.button
+                  <button
                     type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
                     onClick={() => setPriority('High')}
-                    className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                       priority === 'High'
-                        ? 'border-rose-600 dark:border-rose-400 bg-rose-50/50 dark:bg-rose-950/50 text-slate-900 dark:text-white shadow-md ring-1 ring-rose-500/40'
-                        : 'border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+                        ? 'border-rose-600 dark:border-rose-400 bg-rose-50 dark:bg-rose-950/50 text-slate-900 dark:text-white shadow-sm'
+                        : 'border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400'
                     }`}
                   >
-                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.7)]" />
+                    <span className="w-2 h-2 rounded-full bg-rose-500" />
                     <span>High</span>
-                  </motion.button>
+                  </button>
                 </div>
               </div>
 
@@ -233,40 +220,36 @@ export default function EditModal({ isOpen, taskData, onSave, onClose }) {
                 </p>
               )}
 
-              <hr className="border-slate-200 dark:border-slate-800 pt-2" />
+              <hr className="border-slate-200 dark:border-slate-800 pt-1" />
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-3 pt-1">
-                <motion.button
+              <div className="grid grid-cols-2 gap-2.5 pt-0.5">
+                <button
                   type="button"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
                   onClick={onClose}
                   disabled={saving}
-                  className="py-3 px-4 rounded-xl text-sm font-bold text-[#782522] dark:text-rose-300 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all cursor-pointer disabled:opacity-50 text-center"
+                  className="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold text-[#782522] dark:text-rose-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer disabled:opacity-50 text-center"
                 >
                   Cancel
-                </motion.button>
+                </button>
 
-                <motion.button
+                <button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
                   disabled={saving || !title.trim()}
-                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-[#782522] hover:bg-[#661e1b] transition-all shadow-lg shadow-rose-950/40 cursor-pointer disabled:opacity-50"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#782522] hover:bg-[#661e1b] transition-all shadow-md cursor-pointer disabled:opacity-50"
                 >
                   {saving ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
                       <span>Saving...</span>
                     </>
                   ) : (
                     <>
-                      <Save className="w-4 h-4" />
+                      <Save className="w-3.5 h-3.5" />
                       <span>Save Changes</span>
                     </>
                   )}
-                </motion.button>
+                </button>
               </div>
             </form>
           </motion.div>
